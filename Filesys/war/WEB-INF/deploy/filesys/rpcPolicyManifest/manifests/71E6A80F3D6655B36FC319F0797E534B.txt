@@ -1,0 +1,2 @@
+serviceClass: filesys.client.FilesysService
+path: 7805992290939D13AEF6172F2BD0675D.gwt.rpc
