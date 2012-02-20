@@ -30,16 +30,16 @@ public class Filesysserviceimpl extends RemoteServiceServlet implements
 	private FileInfo populateFileInfo(File file) {
 		FileInfo fileInfo = new FileInfo();
 		fileInfo.setPath(file.getAbsolutePath());
-		// TODO: Identify the actual file size and set it
-		fileInfo.setSize(100);
-
+		long fileSize= file.length();
+		fileInfo.setSize(fileSize);
+		fileInfo.setModifiedTime(file.lastModified());
 		return fileInfo;
 	}
 
 	private DirInfo populateDirectoryInfo(File rootDir) {
 		DirInfo dir = new DirInfo();
 		dir.setPath(rootDir.getAbsolutePath());
-
+		dir.setModifiedTime(rootDir.lastModified());
 		File[] children = rootDir.listFiles();
 		
 		if (children != null) {
@@ -61,9 +61,4 @@ public class Filesysserviceimpl extends RemoteServiceServlet implements
 		return dir;
 	}
 }
-
-// TreeItem subitem = new TreeItem(list[i].getName());
-// subitem.addItem("list[i]");
-// tree.addItem(item);
-// walk(list[i]);
 

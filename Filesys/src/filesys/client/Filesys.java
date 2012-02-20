@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class Filesys implements EntryPoint {
 
 	 public FilesysServiceAsync filed = GWT.create(FilesysService.class);
-	  public String path="/home/fedora/Filesys";
+	  public String pathName="/home/fedora/workspace";
  
 //private TextBox newtext = new TextBox();
  // private HorizontalPanel addPanel = new HorizontalPanel();
@@ -30,25 +30,7 @@ public class Filesys implements EntryPoint {
    */
   //@SuppressWarnings("deprecation")
 public void onModuleLoad() {
-	//  String path="/home/fedora/test";
-	  
-	 
-	/*  TreeItem item=new TreeItem("root"); 
-	  TreeItem test=new TreeItem("test");
-	  
-	  item.addItem("root1");
-	  item.addItem("root2");
-	  
-	  test.addItem("test1");
-	  test.addItem("test2");
-	  
-	  tree.addItem(item);
-	  tree.addItem(test);
-	 */
-		
-	  
-	 // addPanel.add(newtext);
-	 
+	
 	  display();
 	  RootPanel.get("testlist").add(tree);
   }
@@ -88,39 +70,7 @@ void display()
 	    };
 	    
 	    
-	 filed.dispfilesys(path,callback);
+	 filed.dispfilesys(pathName,callback);
  }
 }
-//
-	  /*File root=new File();
-	
-	 
-	 
-      walk(root);
-	
-	  RootPanel.get("testlist").add(addPanel);
-	  
-		
-  }
-   
 
-	public void walk(File root){
-		 //File root=new File(path);
-		 TreeItem item=new TreeItem("root.getName()");  
-	//	  File[] list=root.listFiles();
-		 
-		  
-		  for(int i=0;list[i]!= null;i++){
-			  item.addItem(list[i].getName());
-		  }
-		  for(int i = 0;list[i]!=null;i++){
-			  if(list[i].isDirectory()){
-				//  TreeItem subitem = new TreeItem(list[i].getName()); 
-				 // subitem.addItem("list[i]");
-				 // tree.addItem(item);
-				  walk(list[i]);
-				  
-			  
-			  }
-		  }
-	}*/
