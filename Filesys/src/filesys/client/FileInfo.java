@@ -2,29 +2,20 @@ package filesys.client;
 
 import java.io.Serializable;
 
-public class FileInfo extends CommonInfo implements Serializable {
-	//String path;
+public class FileInfo extends NodeInfo implements Serializable {
 	private long size;
 
 	public FileInfo() {
-		//path = null;
+
 		super();
 		setSize(0);
 	}
 
-	public FileInfo(String path, int size) {
-		//this.path = path;
-		super(path);
+	public FileInfo(String path, long time, int size) {
+
+		super(path, time);
 		this.setSize(size);
 	}
-
-	/*public String getPath() {
-		return this.path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}*/
 
 	public long getSize() {
 		return this.size;

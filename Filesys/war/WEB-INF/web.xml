@@ -12,12 +12,12 @@
   
   <!-- Servlets -->
   <servlet>
-    <servlet-name>Filesysserviceimpl</servlet-name>
-    <servlet-class>filesys.server.Filesysserviceimpl</servlet-class>
+    <servlet-name>NodeDisplayServiceImpl</servlet-name>
+    <servlet-class>filesys.server.NodeDisplayServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>Filesysserviceimpl</servlet-name>
+    <servlet-name>NodeDisplayServiceImpl</servlet-name>
     <url-pattern>/filesys/dir</url-pattern>
   </servlet-mapping>
   
