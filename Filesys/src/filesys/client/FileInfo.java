@@ -11,7 +11,7 @@ public class FileInfo extends NodeInfo implements Serializable {
 		setSize(0);
 	}
 
-	public FileInfo(String path, long time, int size) {
+	public FileInfo(String path, String time, int size) {
 
 		super(path, time);
 		this.setSize(size);

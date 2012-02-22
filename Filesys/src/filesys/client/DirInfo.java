@@ -7,18 +7,29 @@ import java.util.List;
 public class DirInfo extends NodeInfo implements Serializable {
 	private List<DirInfo> dirList = new ArrayList<DirInfo>();
 	private List<FileInfo> fileList = new ArrayList<FileInfo>();
+	int countFiles;
+	
+	public int getCountFiles() {
+		return countFiles;
+	}
+
+	public void setCountFiles(int countFiles) {
+		this.countFiles = countFiles;
+	}
 
 	public DirInfo() {
 		super();
 		setDirList(null);
 		setFileList(null);
+		countFiles=0;
 	}
 
-	public DirInfo(String path, long time, List<DirInfo> dirList,
-			List<FileInfo> fileList) {
+	public DirInfo(String path, String time, List<DirInfo> dirList,
+			List<FileInfo> fileList,int count) {
 		super(path, time);
 		this.setDirList(dirList);
 		this.setFileList(fileList);
+		this.setCountFiles(count);
 	}
 
 	public void setDirList(List<DirInfo> dirList) {

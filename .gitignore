@@ -1,0 +1,4 @@
+Filesys/gwt-unitCache/
+Filesys/war/WEB-INF/classes
+Filesys/war/WEB-INF/deploy
+*.gwt.rpc
