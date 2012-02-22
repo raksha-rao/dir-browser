@@ -6,8 +6,6 @@ public interface NodeDisplayServiceAsync {
 
 	void displayNodes(String path, AsyncCallback<DirInfo> callback);
 
-	//void getFileInfo(String path, AsyncCallback<FileInfo> callback);
-
-	void getFileInfo(String path, AsyncCallback<DirInfo> callBack);
+		void getNodeInfo(String path, AsyncCallback<NodeInfo> callBack);
 
 }

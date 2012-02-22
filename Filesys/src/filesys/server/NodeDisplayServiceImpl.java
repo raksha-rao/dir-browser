@@ -15,7 +15,7 @@ public class NodeDisplayServiceImpl extends RemoteServiceServlet implements
 		NodeDisplayService
 
 {
-	 int count=0;
+
 	public DirInfo displayNodes(String path) {
 
 		File root = new File(path);
@@ -65,41 +65,44 @@ public class NodeDisplayServiceImpl extends RemoteServiceServlet implements
 			dir.setDirList(subDirectories);
 			dir.setFileList(files);
 		}
-		
+
 		return dir;
 	}
 
-	public DirInfo getFileInfo(String path) {
-		DirInfo dir = new DirInfo();
-		
+	public NodeInfo getNodeInfo(String path) {
+
 		File file = new File(path);
-	
 
 		if (file.isDirectory()) {
+			DirInfo dir = new DirInfo();
 			dir.setPath(path);
 			dir.setModifiedTime(String.valueOf(file.lastModified()));
-			
+
 			dir.setCountFiles(countFiles(file));
+			return dir;
 		}
 
-		return dir;
-	}
-	
-	int countFiles(File file)
-	{
-		
-	File[] children = file.listFiles();
-
-	if (children != null) {
-		
-		for (File child : children) {
-			if (child.isDirectory()) 
-				countFiles(child);
-			 else
-				count++;
-
+		else {
+			FileInfo fileInfo = new FileInfo();
+			fileInfo.setPath(path);
+			fileInfo.setModifiedTime(String.valueOf(file.lastModified()));
+			fileInfo.setSize(file.length());
+			return fileInfo;
 		}
 	}
-			return count;
+
+	int countFiles(File file) {
+		int count = 0;
+		File[] children = file.listFiles();
+
+		if (children != null) {
+
+			for (File child : children) {
+				if (child.isFile())
+					count++;
+
+			}
 		}
+		return count;
+	}
 }

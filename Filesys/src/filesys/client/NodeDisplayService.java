@@ -6,6 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("dir")
 public interface NodeDisplayService extends RemoteService {
 	DirInfo displayNodes(String path);
-	
-	DirInfo getFileInfo(String path);
+
+	NodeInfo getNodeInfo(String path);
 }

@@ -11,47 +11,45 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.google.gwt.user.client.ui.RootPanel;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
-
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+@SuppressWarnings("deprecation")
 public class NodeDisplay implements EntryPoint {
 
-	public NodeDisplayServiceAsync nodeObject = GWT.create(NodeDisplayService.class);
+	public NodeDisplayServiceAsync nodeObject = GWT
+			.create(NodeDisplayService.class);
 	public String pathName = "/home/fedora/workspace";
-
+	public String path;
 	private Tree tree = new Tree();
 	private Label pathLabel = new Label();
-	private Label fileInfoLabel=new Label();
-	private VerticalPanel vPanel= new VerticalPanel();
+	private Label infoLabel = new Label();
 
-	@SuppressWarnings("deprecation")
+	private Label timeLabel = new Label();
+	private VerticalPanel vPanel = new VerticalPanel();
+
 	HorizontalSplitPanel hPanel = new HorizontalSplitPanel();
 
 	// @SuppressWarnings("deprecation")
-	@SuppressWarnings("deprecation")
 	public void onModuleLoad() {
 
 		displayNodeInfo();
+		displaySelectedItem();
 		hPanel.setHeight("475px");
 		hPanel.setSplitPosition("400px");
 		hPanel.setLeftWidget(tree);
-		vPanel.add(fileInfoLabel);
 		vPanel.add(pathLabel);
-		//vPanel.add(fileInfoLabel);
+		vPanel.add(timeLabel);
+		vPanel.add(infoLabel);
+
 		hPanel.setRightWidget(vPanel);
-	//	hPanel.setRightWidget(fileInfoLabel);
 
 		RootPanel.get("testlist").add(hPanel);
 
@@ -70,14 +68,11 @@ public class NodeDisplay implements EntryPoint {
 		return node;
 	}
 
-	void updateScreen(DirInfo result) {
+	void displayTree(DirInfo result) {
 		final TreeItem rootItem = createDirNode(result);
 		tree.addItem(rootItem);
-		
-		
-	}
 
-	// }
+	}
 
 	void displayNodeInfo() {
 		if (nodeObject == null) {
@@ -90,65 +85,72 @@ public class NodeDisplay implements EntryPoint {
 			}
 
 			public void onSuccess(DirInfo result) {
-				updateScreen(result);
+				displayTree(result);
 			}
 		};
 
 		nodeObject.displayNodes(pathName, callback);
-		
-	
-		
+
+	}
+
+	private void displaySelectedItem() {
+		// TODO Auto-generated method stub
 		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onSelection(SelectionEvent<TreeItem> event) {
-//NodeInfo Object=event.getClass();
-			//	Date date = new Date(Long.parseLong(result.getModifiedTime()));
+
 				// String eol = System.getProperty("line.separator");
-				String path=event.getSelectedItem().getText();
-				pathLabel.setText("Path:\n"
-						+ path + "\n"
-						//+ "TimeStamp:"
-						//+ DateTimeFormat.getMediumDateFormat().format(date)
-						//+result.getClass()
-						//+event.getClass()
-						);
-				
-				if (nodeObject == null) {
-					nodeObject = GWT.create(NodeDisplayService.class);
-				}
+				path = event.getSelectedItem().getText();
+				pathLabel.setText("Absolute Path:	" + path);
 
-				final AsyncCallback<DirInfo> callBack = new AsyncCallback<DirInfo>() {
-					public void onFailure(Throwable caught) {
-						// TODO: Do something with errors.
-					}
-
-					public void onSuccess(DirInfo DirInfo) {
-						displayFileInfo(DirInfo);
-					}
-				};
-
-				
-				
-				nodeObject.getFileInfo(path, callBack);
-			
+				displayItemInfo();
 			}
 		});
-		
-}
-	void displayFileInfo(DirInfo dirInfo)
-	{
-		Date date = new Date(Long.valueOf(dirInfo.getModifiedTime()));
-		fileInfoLabel.setText("Time"+
-				//dirInfo.getModifiedTime()
-				
-				 DateTimeFormat.getMediumDateFormat().format(date)+
-				 "Count Of files:"+
-				 dirInfo.getCountFiles()
-				);
-				//+"FileSize:"+ dirInfo.getSize());
-		//fileInfoLabel.setText("\nDone");
 	}
 
+	private void displayItemInfo() {
+
+		final AsyncCallback<NodeInfo> callBack = new AsyncCallback<NodeInfo>() {
+			public void onFailure(Throwable caught) {
+				// TODO: Do something with errors.
+			}
+
+			public void onSuccess(NodeInfo nodeInfo) {
+				if (nodeInfo instanceof DirInfo) {
+					// DirInfo dirInfo =new DirInfo();
+					// dirInfo= nodeInfo;
+					displayDirInfo(nodeInfo);
+				} else
+					displayFileInfo(nodeInfo);
+			}
+		};
+
+		nodeObject.getNodeInfo(path, callBack);
+
+	}
+
+	@SuppressWarnings("deprecation")
+	void displayFileInfo(NodeInfo currentFileInfo) {
+		FileInfo fileInfo = new FileInfo();
+		fileInfo = (FileInfo) currentFileInfo;
+		displayModifiedTime(fileInfo);
+		infoLabel.setText("FileSize:	" + fileInfo.getSize());
+
+	}
+
+	void displayDirInfo(NodeInfo currentDirInfo) {
+		DirInfo dirInfo = new DirInfo();
+		dirInfo = (DirInfo) currentDirInfo;
+		displayModifiedTime(dirInfo);
+		infoLabel.setText("Fie Count:	" + dirInfo.getCountFiles());
+	}
+
+	private void displayModifiedTime(NodeInfo dirInfo) {
+		Date date = new Date(Long.valueOf(dirInfo.getModifiedTime()));
+		timeLabel.setText("Last Modified Time	" +
+
+		DateTimeFormat.getMediumDateFormat().format(date));
+	}
 }
